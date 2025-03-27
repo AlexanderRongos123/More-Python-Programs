@@ -1,0 +1,104 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMIAuBvadXAdyOcCSQs7LZd",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/AlexanderRongos123/More-Python-Programs/blob/main/Advanced%20Python%20code\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "zfROiM03k-kl",
+        "outputId": "456bbf02-b748-4b85-be98-837b16c08f39"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "This is the first line.\n",
+            "This is the second line.\n",
+            "And this is the last one.\n",
+            "Calling add_numbers with args: (5, 3), kwargs: {}\n",
+            "add_numbers returned: 8\n",
+            "Final result: 8\n"
+          ]
+        }
+      ],
+      "source": [
+        "import os\n",
+        "import contextlib\n",
+        "\n",
+        "# Decorator for logging function calls\n",
+        "def log_calls(func):\n",
+        "    def wrapper(*args, **kwargs):\n",
+        "        print(f\"Calling {func.__name__} with args: {args}, kwargs: {kwargs}\")\n",
+        "        result = func(*args, **kwargs)\n",
+        "        print(f\"{func.__name__} returned: {result}\")\n",
+        "        return result\n",
+        "    return wrapper\n",
+        "\n",
+        "# Context manager for safe file handling\n",
+        "@contextlib.contextmanager\n",
+        "def open_file(filename, mode='r'):\n",
+        "    try:\n",
+        "        file = open(filename, mode)\n",
+        "        yield file\n",
+        "    finally:\n",
+        "        if 'file' in locals() and not file.closed:\n",
+        "            file.close()\n",
+        "\n",
+        "# Generator for reading lines from a file\n",
+        "def read_lines(filename):\n",
+        "    with open_file(filename) as file:\n",
+        "        for line in file:\n",
+        "            yield line.strip()\n",
+        "\n",
+        "# Example usage\n",
+        "if __name__ == \"__main__\":\n",
+        "    # Create a dummy file\n",
+        "    with open_file(\"my_file.txt\", \"w\") as file:\n",
+        "        file.write(\"This is the first line.\\n\")\n",
+        "        file.write(\"This is the second line.\\n\")\n",
+        "        file.write(\"And this is the last one.\\n\")\n",
+        "\n",
+        "    # Use the generator to read lines\n",
+        "    for line in read_lines(\"my_file.txt\"):\n",
+        "        print(line)\n",
+        "\n",
+        "    # Use the decorator to log function calls\n",
+        "    @log_calls\n",
+        "    def add_numbers(a, b):\n",
+        "        return a + b\n",
+        "\n",
+        "    result = add_numbers(5, 3)\n",
+        "    print(f\"Final result: {result}\")"
+      ]
+    }
+  ]
+}
